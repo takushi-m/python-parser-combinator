@@ -30,6 +30,7 @@ class TestArithmetic(unittest.TestCase):
 
     def test_expression(self):
         self.assertEqual(expression("1+2+3+(4-1)",0),[True,[1,"+",2,"+",3,"+",[4,"-",1]],11])
+        self.assertEqual(expression("1+a",0), [True, [1], 1])
 
 if __name__=="__main__":
     unittest.main()
