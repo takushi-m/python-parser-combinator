@@ -44,3 +44,39 @@ def seq(*ary_parser):
                 position = parsed[2]
         return [True, ret, position]
     return parser
+
+def option(p):
+    def parser(target,pos):
+        parsed = p(target,pos)
+        if parsed[0]:
+            return parsed
+        else:
+            return [True, None, pos]
+    return parser
+
+def regexp(regobj):
+    def parser(target,pos):
+        m = regobj.match(target[pos:])
+        if m:
+            return [True, m.group(0),pos+len(m.group(0))]
+        else:
+            return [False, None, pos]
+    return parser
+
+def lazy(callback):
+    p = None
+    def parser(target,pos):
+        nonlocal p
+        if not p:
+            p = callback()
+        return p(target,pos)
+    return parser
+
+def map(p,fn):
+    def parser(target,pos):
+        parsed = p(target,pos)
+        if parsed[0]:
+            return [parsed[0],fn(parsed[1]),parsed[2]]
+        else:
+            return parsed
+    return parser
