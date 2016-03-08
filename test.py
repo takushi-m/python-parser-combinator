@@ -55,6 +55,12 @@ class TestParser(unittest.TestCase):
         self.assertEqual(parser("abc",0), [True,"abc",3])
         self.assertEqual(parser("AbC",0), [True,"AbC",3])
 
+        parser1 = regexp(re.compile("aa|a"))
+        parser2 = regexp(re.compile("a|aa"))
+        s = "aa"
+        self.assertEqual(parser1(s,0), [True, "aa", 2])
+        self.assertEqual(parser2(s,0), [True, "a", 1])
+
     def test_lazy(self):
         parser = option(seq(token("hoge"),lazy(lambda:parser)))
         self.assertEqual(parser("",0), [True, None, 0])
