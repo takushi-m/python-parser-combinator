@@ -26,7 +26,7 @@ def choice(*ary_parser):
     def parser(target,pos):
         for p in ary_parser:
             parsed = p(target,pos)
-            if parsed[1]:
+            if parsed[0]:
                 return parsed
         return [False, None, pos]
     return parser
